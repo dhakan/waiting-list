@@ -143,9 +143,12 @@ ol {
   box-shadow: var(--box-shadow);
 }
 
-/* Animations */
 .new-item {
   transform: scale(1) !important;
+}
+
+.new-item:first-child {
+  transform: scale(1.07) !important;
 }
 
 .waiting-list li:first-child {
