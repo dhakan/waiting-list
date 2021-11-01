@@ -1,0 +1,169 @@
+:root {
+  --clr-primary: #00cc8e;
+  --clr-secondary: #003dcc;
+
+  --size-default: 2.8rem;
+
+  --box-shadow: 3px 5px 10px rgb(0, 0, 0, 0.2);
+  --text-shadow: 1px 1px 1px #000;
+  --border-radius: 5px;
+}
+
+* {
+  box-sizing: border-box;
+  font-size: inherit;
+  font-family: inherit;
+  outline: 0;
+  box-shadow: none;
+}
+
+html {
+  font-size: 62.5%;
+}
+
+body {
+  font-family: "Lato", sans-serif;
+  font-size: var(--size-default);
+  min-height: 100vh;
+  background-image: url("assets/background.svg");
+  background-repeat: no-repeat;
+  background-size: cover;
+  margin: 0;
+}
+
+main {
+  padding: 2rem;
+  width: 100%;
+  max-width: 70rem;
+}
+
+img {
+  max-width: 100%;
+  height: auto;
+}
+
+form {
+  display: flex;
+  flex-direction: column;
+}
+
+button {
+  border: 0;
+  padding: 0;
+  background: transparent;
+}
+
+form input,
+form button {
+  padding: 0.75em 1em;
+  box-shadow: var(--box-shadow);
+  border-radius: var(--border-radius);
+  transition: all 200ms ease-in-out;
+}
+
+form input {
+  border: 0;
+  padding: 0.75em 1em;
+  flex: 1;
+}
+
+form button {
+  color: white;
+  background: rgb(255, 255, 255, 0.2);
+  margin: 1em 0 0 0;
+}
+
+form button[disabled] {
+  cursor: not-allowed;
+  filter: brightness(80%);
+}
+
+form button:hover:not([disabled]) {
+  transform: scale(1.1);
+}
+
+form button:active {
+  transform: scale(1.2);
+}
+
+@media (min-width: 700px) {
+  body {
+    display: grid;
+    justify-items: center;
+  }
+
+  form {
+    flex-direction: row;
+  }
+
+  form button {
+    margin: 0 0 0 1em;
+  }
+
+  main {
+    padding: 10rem 2rem 0 2rem;
+  }
+}
+
+ol {
+  list-style-type: none;
+  padding-left: 0;
+  margin: 0;
+}
+
+.waiting-list {
+  color: white;
+  text-shadow: var(--text-shadow);
+  max-height: 50rem;
+  overflow: auto;
+  margin-top: 1em;
+}
+
+.waiting-list li {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1em;
+  background: rgb(255, 255, 255, 0.2);
+  border-radius: var(--border-radius);
+  transition: transform 300ms ease-in-out;
+  transform: scale(0);
+}
+
+.waiting-list li:not(:first-child) {
+  margin-top: 0.5em;
+}
+
+.done-button {
+  display: none;
+  transition: all 100ms ease-in-out;
+}
+
+.waiting-list li:hover .done-button {
+  display: flex;
+}
+
+.done-button svg {
+  stroke: white;
+  transition: all 200ms ease-in-out;
+}
+
+.done-button:hover svg {
+  stroke: var(--clr-secondary);
+  transform: scale(1.5);
+}
+
+.done-button:active svg {
+  filter: brightness(150%);
+  transform: scale(2);
+}
+
+.waiting-list svg {
+  width: 3rem;
+  height: 3rem;
+}
+
+/* Animations */
+.new-item {
+  transform: scale(1) !important;
+}

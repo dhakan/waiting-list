@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Waiting list</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Lato&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="main.css" />
+  </head>
+  <body>
+    <main>
+      <form action="" id="form">
+        <input type="text" placeholder="Your name" required autofocus />
+        <button type="submit" class="button">I need help</button>
+      </form>
+      <section>
+        <ol class="waiting-list"></ol>
+      </section>
+    </main>
+    <template id="waitingListItemTemplate">
+      <li class="added-item">
+        <span class="username"></span>
+        <button class="done-button">
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            fill="none"
+            viewBox="0 0 24 24"
+          >
+            <path
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke-width="2"
+              d="M5 13l4 4L19 7"
+            />
+          </svg>
+        </button>
+      </li>
+    </template>
+    <script type="module" src="./init-firebase.js"></script>
+    <script type="module">
+      import {
+        getDatabase,
+        ref,
+        onChildAdded,
+        onChildRemoved,
+        push,
+        set,
+        remove,
+      } from "https://www.gstatic.com/firebasejs/9.2.0/firebase-database.js";
+
+      const db = getDatabase();
+      const usernameListRef = ref(db, "users");
+
+      const $form = document.querySelector("#form");
+      const $input = $form.querySelector("input");
+      const $list = document.querySelector(".waiting-list");
+
+      $form.addEventListener("submit", function (e) {
+        e.preventDefault();
+
+        const value = $input.value.trim();
+
+        const newUsernameRef = push(usernameListRef);
+        set(newUsernameRef, {
+          name: value,
+        });
+
+        $input.value = "";
+
+        console.log("console log", value);
+      });
+
+      onChildAdded(usernameListRef, (data) => {
+        const { name } = data.val();
+        const { key } = data;
+
+        console.log("added", name, key);
+
+        const $template = document.querySelector("#waitingListItemTemplate");
+
+        const $clone = $template.content.cloneNode(true);
+        const $li = $clone.querySelector("li");
+        const $username = $clone.querySelector(".username");
+        const $doneButton = $clone.querySelector(".done-button");
+
+        $username.innerText = name;
+
+        $list.prepend($clone);
+
+        // Hack to get animations to work
+        setTimeout(() => {
+          $li.classList.add("new-item");
+        }, 0);
+
+        $doneButton.dataset.key = key;
+
+        $doneButton.addEventListener("click", () => {
+          const userId = $doneButton.dataset.key;
+          console.log("click", userId);
+
+          remove(ref(db, "users/" + userId));
+        });
+      });
+
+      onChildRemoved(usernameListRef, (data) => {
+        const { key } = data;
+        const $item = document.querySelector(`[data-key=${key}]`).parentNode;
+
+        $item.classList.remove("new-item");
+
+        // Mimicking "transitionend" since that event doesn't seem to work here
+        setTimeout(() => {
+          $item.remove();
+        }, 0);
+      });
+    </script>
+  </body>
+</html>
