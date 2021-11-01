@@ -89,7 +89,7 @@ form button:hover:not([disabled]) {
 }
 
 form button:active {
-  transform: scale(1.2);
+  transform: scale(1.2) !important;
 }
 
 @media (min-width: 700px) {
