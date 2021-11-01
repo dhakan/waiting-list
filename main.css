@@ -69,7 +69,7 @@ form input {
 
 form button {
   color: white;
-  background: rgb(255, 255, 255, 0.2);
+  background: rgb(0, 61, 204, 1);
   margin: 1em 0 0 0;
 }
 
@@ -125,9 +125,19 @@ ol {
   align-items: center;
   padding: 1em;
   background: rgb(255, 255, 255, 0.2);
-  border-radius: var(--border-radius);
+  /* border-radius: var(--border-radius); */
   transition: transform 300ms ease-in-out;
   transform: scale(0);
+}
+
+/* Animations */
+.new-item {
+  transform: scale(1) !important;
+}
+
+.waiting-list li:first-child {
+  background: rgb(0, 61, 204, 0.4);
+  border-left: 5px solid var(--clr-secondary);
 }
 
 .waiting-list li:not(:first-child) {
@@ -161,9 +171,4 @@ ol {
 .waiting-list svg {
   width: 3rem;
   height: 3rem;
-}
-
-/* Animations */
-.new-item {
-  transform: scale(1) !important;
 }
