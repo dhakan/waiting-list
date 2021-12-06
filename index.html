@@ -58,6 +58,7 @@
       const $form = document.querySelector("#form");
       const $input = $form.querySelector("input");
       const $list = document.querySelector(".waiting-list");
+      const $title = document.querySelector("title");
 
       $form.addEventListener("submit", function (e) {
         e.preventDefault();
@@ -70,15 +71,19 @@
         });
 
         $input.value = "";
-
-        console.log("console log", value);
       });
+
+      function updateTitle() {
+        const numOfWaitingPeople = $list.querySelectorAll(".new-item").length;
+        $title.textContent =
+          numOfWaitingPeople > 0
+            ? `(${numOfWaitingPeople}) Waiting list`
+            : "Waiting list";
+      }
 
       onChildAdded(usernameListRef, (data) => {
         const { name } = data.val();
         const { key } = data;
-
-        console.log("added", name, key);
 
         const $template = document.querySelector("#waitingListItemTemplate");
 
@@ -100,10 +105,10 @@
 
         $doneButton.addEventListener("click", () => {
           const userId = $doneButton.dataset.key;
-          console.log("click", userId);
-
           remove(ref(db, "users/" + userId));
         });
+
+        setTimeout(updateTitle, 0);
       });
 
       onChildRemoved(usernameListRef, (data) => {
@@ -115,6 +120,7 @@
         // Mimicking "transitionend" since that event doesn't seem to work here
         setTimeout(() => {
           $item.remove();
+          updateTitle();
         }, 300);
       });
     </script>
