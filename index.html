@@ -60,6 +60,12 @@
       const $list = document.querySelector(".waiting-list");
       const $title = document.querySelector("title");
 
+      // Period in which to not treat added items as "new items" of the waiting list
+      const INITIAL_LOADING_TIME = 1000;
+      let treatItemsAsNew = false;
+
+      const sound = new Audio("assets/sound.mp3");
+
       $form.addEventListener("submit", function (e) {
         e.preventDefault();
 
@@ -109,6 +115,10 @@
         });
 
         setTimeout(updateTitle, 0);
+
+        if (treatItemsAsNew) {
+          sound.play();
+        }
       });
 
       onChildRemoved(usernameListRef, (data) => {
@@ -123,6 +133,11 @@
           updateTitle();
         }, 300);
       });
+
+      // Hack to differentiate between initial load and actually new items
+      setTimeout(() => {
+        treatItemsAsNew = true;
+      }, INITIAL_LOADING_TIME);
     </script>
   </body>
 </html>
