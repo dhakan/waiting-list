@@ -50,9 +50,10 @@
         push,
         set,
         remove,
-      } from "https://www.gstatic.com/firebasejs/9.2.0/firebase-database.js";
+      } from "https://www.gstatic.com/firebasejs/9.9.4/firebase-database.js";
 
       const db = getDatabase();
+      console.log(db)
       const usernameListRef = ref(db, "users");
 
       const $form = document.querySelector("#form");
